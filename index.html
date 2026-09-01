@@ -5,33 +5,81 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Virtual 3D Fitting Assistant</title>
     <link rel="stylesheet" href="style.css">
-    <!-- Three.js Library එක CDN එක හරහා Load කිරීම -->
+    
+    <!-- Three.js CDN Libraries -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
-    <!-- Three.js GLTFLoader for importing 3D Models (.glb / .gltf) -->
     <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
 </head>
 <body>
     <div class="container">
-        <!-- වම් පැත්තේ Measurement Controls -->
         <div class="controls">
             <h2>3D Body Fitting</h2>
-            
+
+            <!-- Target Category -->
             <div class="input-group">
-                <label for="height">Height (cm): <span id="height-val">170</span></label>
-                <input type="range" id="height" min="150" max="200" value="170">
+                <label for="gender-type">Target Category:</label>
+                <select id="gender-type" onchange="onGenderChange()">
+                    <option value="men" selected>Men</option>
+                    <option value="women">Women</option>
+                    <option value="kids">Kids</option>
+                </select>
             </div>
 
-            <div class="input-group">
-                <label for="chest">Chest (cm): <span id="chest-val">95</span></label>
-                <input type="range" id="chest" min="70" max="130" value="95">
+            <!-- Body Type / Shape -->
+            <div class="input-group" id="body-type-wrapper">
+                <label for="body-type">Body Type / Shape:</label>
+                <select id="body-type" onchange="onBodyTypeChange()">
+                    <!-- Options populated dynamically -->
+                </select>
             </div>
 
+            <!-- Height Control -->
             <div class="input-group">
-                <label for="waist">Waist (cm): <span id="waist-val">80</span></label>
-                <input type="range" id="waist" min="60" max="120" value="80">
+                <div class="label-row">
+                    <label for="height-slider">Height:</label>
+                    <div class="input-control-box">
+                        <input type="number" id="height-num" class="num-input" value="69" step="0.5">
+                        <select id="height-unit" class="unit-select" onchange="onUnitChange('height')">
+                            <option value="in" selected>in</option>
+                            <option value="cm">cm</option>
+                        </select>
+                    </div>
+                </div>
+                <input type="range" id="height-slider" min="50" max="85" value="69" step="0.5">
             </div>
-            <!-- Clothing Size Selector -->
+
+            <!-- Chest / Bust Control -->
+            <div class="input-group">
+                <div class="label-row">
+                    <label for="chest-slider">Chest / Bust:</label>
+                    <div class="input-control-box">
+                        <input type="number" id="chest-num" class="num-input" value="40" step="0.5">
+                        <select id="chest-unit" class="unit-select" onchange="onUnitChange('chest')">
+                            <option value="in" selected>in</option>
+                            <option value="cm">cm</option>
+                        </select>
+                    </div>
+                </div>
+                <input type="range" id="chest-slider" min="25" max="60" value="40" step="0.5">
+            </div>
+
+            <!-- Hip Control -->
+            <div class="input-group">
+                <div class="label-row">
+                    <label for="hip-slider">Hip:</label>
+                    <div class="input-control-box">
+                        <input type="number" id="hip-num" class="num-input" value="38" step="0.5">
+                        <select id="hip-unit" class="unit-select" onchange="onUnitChange('hip')">
+                            <option value="in" selected>in</option>
+                            <option value="cm">cm</option>
+                        </select>
+                    </div>
+                </div>
+                <input type="range" id="hip-slider" min="20" max="60" value="38" step="0.5">
+            </div>
+
+            <!-- Garment Size Selector -->
             <div class="input-group">
                 <label for="shirt-size">Select Garment Size:</label>
                 <select id="shirt-size">
@@ -42,24 +90,14 @@
                 </select>
             </div>
 
-            <!-- Fit Status Output -->
+            <!-- Fit Analysis Card -->
             <div class="fit-card">
                 <h3>Fit Analysis</h3>
                 <p>Recommended Size: <strong id="rec-size">M</strong></p>
                 <p>Status: <span id="fit-status" class="status-fit">Perfect Fit</span></p>
             </div>
 
-            <!-- Shirt Color Picker -->
-            <div class="input-group">
-                <label>Garment Color:</label>
-                <div class="color-options">
-                    <button type="button" class="color-btn btn-red" onclick="changeColor(0xef4444)"></button>
-                    <button type="button" class="color-btn btn-green" onclick="changeColor(0x10b981)"></button>
-                    <button type="button" class="color-btn btn-blue" onclick="changeColor(0x3b82f6)"></button>
-                    <button type="button" class="color-btn btn-amber" onclick="changeColor(0xf59e0b)"></button>
-                </div>
-            </div>
-            <!-- E-commerce Action Panel -->
+            <!-- Product Panel -->
             <div class="product-info-card">
                 <h4>Casual Cotton Polo T-Shirt</h4>
                 <p class="price">Rs. 3,490.00</p>
@@ -67,7 +105,7 @@
             </div>
         </div>
 
-        <!-- දකුණු පැත්තේ 3D Canvas එක -->
+        <!-- 3D Canvas Viewport -->
         <div id="canvas-container"></div>
     </div>
 

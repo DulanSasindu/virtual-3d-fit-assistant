@@ -8,6 +8,7 @@
 body {
     background-color: #1a1a1a;
     color: #fff;
+    overflow: hidden;
 }
 
 .container {
@@ -16,25 +17,66 @@ body {
 }
 
 .controls {
-    width: 320px;
-    padding: 30px;
+    width: 360px;
+    padding: 24px;
     background-color: #242424;
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: 16px;
     box-shadow: 2px 0 10px rgba(0,0,0,0.5);
     z-index: 10;
+    overflow-y: auto;
+}
+
+.controls h2 {
+    font-size: 20px;
+    color: #f3f4f6;
 }
 
 .input-group {
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: 6px;
+}
+
+.label-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.input-control-box {
+    display: flex;
+    gap: 4px;
+    align-items: center;
+}
+
+.num-input {
+    width: 65px;
+    padding: 4px 6px;
+    background: #111827;
+    border: 1px solid #4b5563;
+    color: #3b82f6;
+    font-weight: bold;
+    border-radius: 4px;
+    text-align: center;
+}
+
+.unit-select {
+    padding: 4px;
+    background: #111827;
+    color: #9ca3af;
+    border: 1px solid #4b5563;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: bold;
+    cursor: pointer;
 }
 
 input[type=range] {
     width: 100%;
-    accent-color: #007acc;
+    accent-color: #3b82f6;
+    cursor: pointer;
 }
 
 #canvas-container {
@@ -48,18 +90,19 @@ select {
     color: #fff;
     border: 1px solid #555;
     border-radius: 5px;
+    cursor: pointer;
 }
 
 .fit-card {
     background: #1e293b;
-    padding: 15px;
+    padding: 14px;
     border-radius: 8px;
     border-left: 4px solid #3b82f6;
 }
 
 .fit-card h3 {
-    font-size: 14px;
-    margin-bottom: 8px;
+    font-size: 13px;
+    margin-bottom: 6px;
     color: #94a3b8;
 }
 
@@ -67,61 +110,23 @@ select {
 .status-tight { color: #ef4444; font-weight: bold; }
 .status-loose { color: #eab308; font-weight: bold; }
 
-.color-options {
-    display: flex;
-    gap: 10px;
-}
-
-.color-btn {
-    width: 30px;
-    height: 30px;
-    border-radius: 50%;
-    border: 2px solid #fff;
-    cursor: pointer;
-}
-
-.color-options {
-    display: flex;
-    gap: 12px;
-    margin-top: 5px;
-}
-
-.color-btn {
-    width: 32px !important;
-    height: 32px !important;
-    border-radius: 50% !important;
-    border: 2px solid #ffffff !important;
-    cursor: pointer;
-    outline: none;
-    transition: transform 0.2s ease;
-}
-
-.color-btn:hover {
-    transform: scale(1.15);
-}
-
-.btn-red { background-color: #ef4444 !important; }
-.btn-green { background-color: #10b981 !important; }
-.btn-blue { background-color: #3b82f6 !important; }
-.btn-amber { background-color: #f59e0b !important; }
-
 .product-info-card {
     background: #111827;
-    padding: 15px;
+    padding: 14px;
     border-radius: 8px;
     margin-top: auto;
 }
 
 .product-info-card h4 {
-    font-size: 16px;
+    font-size: 15px;
     color: #f3f4f6;
 }
 
 .product-info-card .price {
-    font-size: 18px;
+    font-size: 17px;
     color: #3b82f6;
     font-weight: bold;
-    margin: 8px 0;
+    margin: 6px 0;
 }
 
 #add-to-cart-btn {

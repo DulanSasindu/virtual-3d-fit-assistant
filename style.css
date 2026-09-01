@@ -1,3 +1,6 @@
+/* ==========================================
+   GLOBAL & RESETS
+   ========================================== */
 * {
     margin: 0;
     padding: 0;
@@ -6,7 +9,7 @@
 }
 
 body {
-    background-color: #1a1a1a;
+    background: radial-gradient(circle at top right, #1f2937, #111827, #030712);
     color: #fff;
     overflow: hidden;
 }
@@ -16,10 +19,15 @@ body {
     height: 100vh;
 }
 
+/* ==========================================
+   SIDEBAR CONTROLS (GLASSMORPHISM)
+   ========================================== */
 .controls {
     width: 360px;
     padding: 24px;
-    background-color: #242424;
+    background: rgba(30, 41, 59, 0.7);
+    backdrop-filter: blur(16px);
+    border-right: 1px solid rgba(255, 255, 255, 0.08);
     display: flex;
     flex-direction: column;
     gap: 16px;
@@ -73,26 +81,89 @@ body {
     cursor: pointer;
 }
 
-input[type=range] {
-    width: 100%;
-    accent-color: #3b82f6;
-    cursor: pointer;
-}
-
-#canvas-container {
-    flex: 1;
-    height: 100%;
-}
-
 select {
     padding: 8px;
-    background: #333;
+    background: #1e293b;
     color: #fff;
-    border: 1px solid #555;
+    border: 1px solid #475569;
     border-radius: 5px;
     cursor: pointer;
 }
 
+/* Custom Glowing Range Sliders */
+input[type=range] {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 100%;
+    height: 5px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 5px;
+    outline: none;
+}
+
+input[type=range]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: #3b82f6;
+    cursor: pointer;
+    box-shadow: 0 0 10px #3b82f6;
+    transition: transform 0.1s ease;
+}
+
+input[type=range]::-webkit-slider-thumb:hover {
+    transform: scale(1.2);
+}
+
+/* ==========================================
+   VISUAL BODY CARDS
+   ========================================== */
+.body-cards-container {
+    display: flex;
+    gap: 8px;
+    margin-top: 4px;
+}
+
+.body-card {
+    flex: 1;
+    background: rgba(15, 23, 42, 0.6);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 10px 6px;
+    border-radius: 8px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    flex-direction: column;
+}
+
+.body-card:hover {
+    border-color: #3b82f6;
+    background: rgba(59, 130, 246, 0.1);
+}
+
+.body-card.active {
+    border-color: #3b82f6;
+    background: rgba(59, 130, 246, 0.2);
+    box-shadow: 0 0 12px rgba(59, 130, 246, 0.3);
+}
+
+.body-card span {
+    font-size: 12px;
+    font-weight: 600;
+    color: #f3f4f6;
+}
+
+.body-card small {
+    font-size: 10px;
+    color: #9ca3af;
+}
+
+/* ==========================================
+   FIT ANALYSIS & MATCH PROGRESS BAR
+   ========================================== */
 .fit-card {
     background: #1e293b;
     padding: 14px;
@@ -100,16 +171,51 @@ select {
     border-left: 4px solid #3b82f6;
 }
 
+.fit-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
 .fit-card h3 {
     font-size: 13px;
-    margin-bottom: 6px;
     color: #94a3b8;
+}
+
+.match-badge {
+    font-size: 11px;
+    font-weight: bold;
+    color: #3b82f6;
+    background: rgba(59, 130, 246, 0.15);
+    padding: 2px 8px;
+    border-radius: 12px;
+    border: 1px solid rgba(59, 130, 246, 0.3);
+}
+
+.progress-bar-bg {
+    width: 100%;
+    height: 6px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 4px;
+    overflow: hidden;
+    margin-bottom: 10px;
+}
+
+.progress-bar-fill {
+    height: 100%;
+    background: #22c55e;
+    width: 95%;
+    transition: width 0.3s ease, background 0.3s ease;
 }
 
 .status-fit { color: #22c55e; font-weight: bold; }
 .status-tight { color: #ef4444; font-weight: bold; }
 .status-loose { color: #eab308; font-weight: bold; }
 
+/* ==========================================
+   PRODUCT CARD & BUTTONS
+   ========================================== */
 .product-info-card {
     background: #111827;
     padding: 14px;
@@ -143,4 +249,85 @@ select {
 
 #add-to-cart-btn:hover {
     background: #1d4ed8;
+}
+
+/* ==========================================
+   3D CANVAS VIEWPORT & FLOATING HUD
+   ========================================== */
+#canvas-container {
+    flex: 1;
+    height: 100%;
+    position: relative;
+}
+
+/* Soft Radial Glow Effect Behind Avatar */
+#canvas-container::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 450px;
+    height: 450px;
+    background: radial-gradient(circle, rgba(59, 130, 246, 0.15) 0%, rgba(0,0,0,0) 70%);
+    pointer-events: none;
+    z-index: 1;
+}
+
+.viewport-hud {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    right: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    pointer-events: none;
+    z-index: 5;
+}
+
+.hud-status {
+    background: rgba(15, 23, 42, 0.75);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 12px;
+    color: #cbd5e1;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.pulse-dot {
+    width: 8px;
+    height: 8px;
+    background-color: #22c55e;
+    border-radius: 50%;
+    box-shadow: 0 0 8px #22c55e;
+    animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+    0% { transform: scale(0.95); opacity: 0.8; }
+    50% { transform: scale(1.2); opacity: 1; }
+    100% { transform: scale(0.95); opacity: 0.8; }
+}
+
+.hud-btn {
+    pointer-events: auto;
+    background: rgba(15, 23, 42, 0.75);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    color: #f3f4f6;
+    padding: 8px 14px;
+    border-radius: 8px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.hud-btn:hover {
+    background: rgba(59, 130, 246, 0.8);
 }

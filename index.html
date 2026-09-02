@@ -3,57 +3,61 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Virtual 3D Fitting Assistant</title>
+    <title>3D Fitting Room</title>
     <link rel="stylesheet" href="style.css">
-    
-    <!-- Three.js & OrbitControls / GLTFLoader CDN Libraries -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
 </head>
 <body>
-    <div class="container">
-        <!-- Left Sidebar Controls Panel -->
-        <div class="controls">
+    <div class="app-container">
+        <!-- LEFT CONTROL PANEL -->
+        <div class="control-panel">
             <h2>3D Body Fitting</h2>
 
-            <!-- Target Category Selection -->
-            <div class="input-group">
+            <!-- DYNAMIC PRODUCT INFORMATION CARD -->
+            <div class="product-banner">
+                <span id="product-title-display">Loading Product...</span>
+                <span id="product-price-display">--</span>
+            </div>
+
+            <!-- 1. TARGET CATEGORY -->
+            <div class="form-group">
                 <label for="gender-type">Target Category:</label>
                 <select id="gender-type" onchange="onGenderChange()">
-                    <option value="men" selected>Men</option>
+                    <option value="men">Men</option>
                     <option value="women">Women</option>
                     <option value="kids">Kids</option>
                 </select>
             </div>
 
-            <!-- Body Type Selection Cards -->
-            <div class="input-group" id="body-type-wrapper">
+            <!-- 2. BODY TYPE / SHAPE -->
+            <div class="form-group" id="body-type-wrapper">
                 <label>Body Type / Shape:</label>
-                <div class="body-cards-container">
+                <div class="body-type-cards">
                     <div class="body-card active" data-value="mesomorph" onclick="selectBodyCard('mesomorph')">
-                        <span>Athletic</span>
+                        <strong>Athletic</strong>
                         <small>Mesomorph</small>
                     </div>
                     <div class="body-card" data-value="ectomorph" onclick="selectBodyCard('ectomorph')">
-                        <span>Slim</span>
+                        <strong>Slim</strong>
                         <small>Ectomorph</small>
                     </div>
                     <div class="body-card" data-value="endomorph" onclick="selectBodyCard('endomorph')">
-                        <span>Heavy</span>
+                        <strong>Heavy</strong>
                         <small>Endomorph</small>
                     </div>
                 </div>
             </div>
 
-            <!-- Height Adjustment -->
-            <div class="input-group">
-                <div class="label-row">
-                    <label for="height-slider">Height:</label>
-                    <div class="input-control-box">
-                        <input type="number" id="height-num" class="num-input" value="69" step="0.5">
-                        <select id="height-unit" class="unit-select" onchange="onUnitChange('height')">
-                            <option value="in" selected>in</option>
+            <!-- 3. MEASUREMENTS -->
+            <div class="form-group">
+                <div class="slider-header">
+                    <label>Height:</label>
+                    <div class="input-with-unit">
+                        <input type="number" id="height-num" value="69">
+                        <select id="height-unit" onchange="onUnitChange('height')">
+                            <option value="in">in</option>
                             <option value="cm">cm</option>
                         </select>
                     </div>
@@ -61,29 +65,27 @@
                 <input type="range" id="height-slider" min="50" max="85" value="69" step="0.5">
             </div>
 
-            <!-- Chest / Bust Adjustment -->
-            <div class="input-group">
-                <div class="label-row">
-                    <label for="chest-slider">Chest / Bust:</label>
-                    <div class="input-control-box">
-                        <input type="number" id="chest-num" class="num-input" value="40" step="0.5">
-                        <select id="chest-unit" class="unit-select" onchange="onUnitChange('chest')">
-                            <option value="in" selected>in</option>
+            <div class="form-group" id="group-chest">
+                <div class="slider-header">
+                    <label>Chest / Bust:</label>
+                    <div class="input-with-unit">
+                        <input type="number" id="chest-num" value="40">
+                        <select id="chest-unit" onchange="onUnitChange('chest')">
+                            <option value="in">in</option>
                             <option value="cm">cm</option>
                         </select>
                     </div>
                 </div>
-                <input type="range" id="chest-slider" min="25" max="60" value="40" step="0.5">
+                <input type="range" id="chest-slider" min="20" max="60" value="40" step="0.5">
             </div>
 
-            <!-- Hip Adjustment -->
-            <div class="input-group">
-                <div class="label-row">
-                    <label for="hip-slider">Hip:</label>
-                    <div class="input-control-box">
-                        <input type="number" id="hip-num" class="num-input" value="38" step="0.5">
-                        <select id="hip-unit" class="unit-select" onchange="onUnitChange('hip')">
-                            <option value="in" selected>in</option>
+            <div class="form-group">
+                <div class="slider-header">
+                    <label id="hip-label">Hip / Waist:</label>
+                    <div class="input-with-unit">
+                        <input type="number" id="hip-num" value="38">
+                        <select id="hip-unit" onchange="onUnitChange('hip')">
+                            <option value="in">in</option>
                             <option value="cm">cm</option>
                         </select>
                     </div>
@@ -91,50 +93,36 @@
                 <input type="range" id="hip-slider" min="20" max="60" value="38" step="0.5">
             </div>
 
-            <!-- Garment Size Selection -->
-            <div class="input-group">
-                <label for="shirt-size">Select Garment Size:</label>
-                <select id="shirt-size">
-                    <option value="S">S (Small)</option>
-                    <option value="M" selected>M (Medium)</option>
-                    <option value="L">L (Large)</option>
-                    <option value="XL">XL (Extra Large)</option>
-                </select>
+            <!-- GARMENT SIZE SELECTION -->
+            <div class="form-group">
+                <label for="garment-size">Select Garment Size:</label>
+                <select id="garment-size"></select>
             </div>
 
-            <!-- Fit Analysis Card with Dynamic Progress Bar -->
-            <div class="fit-card">
-                <div class="fit-header">
-                    <h3>Fit Analysis</h3>
-                    <!-- Percentage Badge -->
-                    <span id="fit-match-text" class="match-badge">95% Match</span>
+            <!-- FIT ANALYSIS CARD -->
+            <div class="fit-analysis-card">
+                <div class="analysis-header">
+                    <span>Fit Analysis</span>
+                    <span class="match-badge" id="fit-match-text">92% Match</span>
                 </div>
-                <!-- Visual Fit Match Progress Bar -->
                 <div class="progress-bar-bg">
-                    <div id="fit-progress-fill" class="progress-bar-fill" style="width: 95%;"></div>
+                    <div class="progress-bar-fill" id="fit-progress-fill"></div>
                 </div>
-                <p>Recommended Size: <strong id="rec-size">M</strong></p>
-                <p>Status: <span id="fit-status" class="status-fit">Perfect Fit</span></p>
+                <div class="fit-result-details">
+                    <p>Recommended Size: <strong id="rec-size">M</strong></p>
+                    <p>Status: <span id="fit-status" class="status-fit">Perfect Fit</span></p>
+                </div>
             </div>
 
-            <!-- Product Information & Checkout -->
-            <div class="product-info-card">
-                <h4>Casual Cotton Polo T-Shirt</h4>
-                <p class="price">Rs. 3,490.00</p>
-                <button id="add-to-cart-btn" onclick="addToCart()">Add Selected Size to Cart</button>
-            </div>
+            <button class="add-cart-btn" onclick="addToCart()">Add Selected Size to Cart</button>
         </div>
 
-        <!-- 3D Canvas Viewport -->
+        <!-- RIGHT 3D VIEWPORT CANVAS -->
         <div id="canvas-container">
-            <!-- Floating HUD Viewport Header -->
-            <div class="viewport-hud">
-                <div class="hud-status">
-                    <span class="pulse-dot"></span>
-                    <span>Realtime Dynamic Fitting</span>
-                </div>
-                <button class="hud-btn" onclick="reset3DCamera()">↺ Reset View</button>
+            <div class="view-overlay-tag">
+                <span class="pulse-dot"></span> Realtime Dynamic Fitting
             </div>
+            <button class="reset-view-btn" onclick="reset3DCamera()">⟲ Reset View</button>
         </div>
     </div>
 
